@@ -57,7 +57,7 @@ def getTotalNumberOfLipsticks(numberOfLipsticks, numberOfLeftoversNeeded):
     leftover = created 
     total = created
     while (leftover+created)>=numberOfLeftoversNeeded:
-        
+
         created = leftover//numberOfLeftoversNeeded
         leftover = leftover%numberOfLeftoversNeeded
 
@@ -70,7 +70,7 @@ def getTotalNumberOfLipsticks(numberOfLipsticks, numberOfLeftoversNeeded):
 def testLipsticks():
     print('\n'+ '-' * 20)
     print('Part 2: Lipsticks')
-    # assert getTotalNumberOfLipsticks(10, 3) == 9 # does not exist in the examples
+    # assert getTotalNumberOfLipsticks(10, 3) == 9 # How is it possible to end up selling less than the starting number of lipsticks?!
     assert getTotalNumberOfLipsticks(15, 5) == 18
     assert getTotalNumberOfLipsticks(2, 3) == 2
     assert getTotalNumberOfLipsticks(5, 2) == 9
@@ -94,16 +94,43 @@ def testLipsticks():
 # chair number 3
 
 def getLastStudent(numberOfStudents, treats, startingChair):
-    return None
+    last = startingChair
+    while treats > 1:
+        treats-=1
+        last+=1
+        last = max(last%(numberOfStudents+1),1)
+    return last
+def FastgetLastStudent(numberOfStudents, treats, startingChair):
+    '''
+        Incorrect implementation (gives out incorrect answers for certain edge cases)
+    '''
+    # calculate the required shift
+    shift = startingChair-1 # from the first position
+    assert shift >= 0, "Cannot have zero/negative starting position"
+    assert startingChair <= numberOfStudents, "Starting position cannot be greater than the number of students"
 
+    # determine last chair (without shifting)
+    last_chair = treats % numberOfStudents
+
+    # add shift & return mod (adjust number of students to account for starting from 0) 
+    last_chair += shift
+        
+    return last_chair%numberOfStudents
+    
 def testLastStudent():
         print('\n'+ '-' * 20)
         print('Part 3: Students and Treats')
+        assert getLastStudent(4,6,2) == 3
+        assert getLastStudent(4,6,2) == 3
         assert getLastStudent(5,2,1) == 2
         assert getLastStudent(5,2,2) == 3
         assert getLastStudent(7,19,2) == 6
         assert getLastStudent(3,7,3) == 3
-        # TODO add your own test cases here
+        assert getLastStudent(3,7,1) == 1
+        assert getLastStudent(8,20,1) == 4
+        assert getLastStudent(9,12,9) == 2
+        assert getLastStudent(8,20,8) == 3
+        assert getLastStudent(3,13,3) == 3
 
         print('PASSED PROBLEM 3!')
 
@@ -130,12 +157,12 @@ def testPairsOfShoes():
     assert getPairsOfShoes(["green", "blue", "blue", "blue", "blue", "blue", "green"]) == 3
     assert getPairsOfShoes(["green", "blue"]) == 0
     assert getPairsOfShoes(["green", "blue","yellow","blue"]) == 1
-    
+
     print('PASSED PROBLEM 4!')
     print('\n\nCongratulations!!')
 
 # Call test functions
 testLeastFactorial()
 testLipsticks()
-# testLastStudent()
+testLastStudent()
 testPairsOfShoes()
