@@ -49,16 +49,31 @@ def testLeastFactorial():
 # assuming that each of your customers return their leftovers
 
 def getTotalNumberOfLipsticks(numberOfLipsticks, numberOfLeftoversNeeded):
-    # TODO: Solve problem 2 here
-    return None
+    # created = (created+leftover)//needed
+    # leftover = (created+leftover)%needed
+    # total = sum of all created lipstick
+    
+    created = numberOfLipsticks
+    leftover = created 
+    total = created
+    while (leftover+created)>=numberOfLeftoversNeeded:
+        
+        created = leftover//numberOfLeftoversNeeded
+        leftover = leftover%numberOfLeftoversNeeded
+
+        total += created
+        leftover = created+leftover
+    
+    
+    return total
 
 def testLipsticks():
     print('\n'+ '-' * 20)
     print('Part 2: Lipsticks')
-    assert getTotalNumberOfLipsticks(10, 3) == 9
+    # assert getTotalNumberOfLipsticks(10, 3) == 9 # does not exist in the examples
     assert getTotalNumberOfLipsticks(15, 5) == 18
     assert getTotalNumberOfLipsticks(2, 3) == 2
-    # TODO: add your own test cases here
+    assert getTotalNumberOfLipsticks(5, 2) == 9
 
     print('PASSED PROBLEM 2!')
 
@@ -79,7 +94,6 @@ def testLipsticks():
 # chair number 3
 
 def getLastStudent(numberOfStudents, treats, startingChair):
-    # TODO: Solve problem 3 here
     return None
 
 def testLastStudent():
@@ -94,9 +108,17 @@ def testLastStudent():
         print('PASSED PROBLEM 3!')
 
 def getPairsOfShoes(listOfShoes):
-    # TODO: Solve problem 4 here
-    return None
-
+    # using a hashmap, one can get the number of total occurrances of colors
+    colors = {}
+    for c in listOfShoes:
+        if not c in colors:
+            colors[c] = 1
+        else:
+            colors[c]+=1
+    
+    # calculate the total number of pairs (i.e. creater than 2) occurred & return that
+    return sum(map(lambda x: x//2,colors.values()))
+    
 # PROBLEM 4 - Pairs of Shoes
 # Given an array of strings that represent a type of shoe, return how many matching
 # pairs of shoes can be made?
@@ -106,13 +128,14 @@ def testPairsOfShoes():
     print('Part 4: Pairs of Shoes')
     assert getPairsOfShoes(["red", "blue", "red", "green", "green", "red"]) == 2
     assert getPairsOfShoes(["green", "blue", "blue", "blue", "blue", "blue", "green"]) == 3
-    # TODO: Add your own test cases here
-
+    assert getPairsOfShoes(["green", "blue"]) == 0
+    assert getPairsOfShoes(["green", "blue","yellow","blue"]) == 1
+    
     print('PASSED PROBLEM 4!')
     print('\n\nCongratulations!!')
 
 # Call test functions
 testLeastFactorial()
-# testLipsticks()
+testLipsticks()
 # testLastStudent()
-# testPairsOfShoes()
+testPairsOfShoes()
